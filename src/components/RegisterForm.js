@@ -1,6 +1,7 @@
-import React from 'react';
-import useForm from '../hooks/FormHooks';
+// eslint-disable-next-line no-unused-vars
+import PropTypes from 'prop-types';
 import {useUser} from '../hooks/ApiHooks';
+import useForm from '../hooks/FormHooks';
 
 const RegisterForm = (props) => {
   const alkuarvot = {
@@ -10,13 +11,16 @@ const RegisterForm = (props) => {
     full_name: '',
   };
 
-  const {postUser} = useUser();
+  const {postUser, getUsername} = useUser();
 
   const doRegister = async () => {
     console.log('doRegister');
     try {
-      const userData = await postUser(inputs);
-      console.log(userData);
+      const checkUser = await getUsername(inputs.username);
+      if (checkUser) {
+        const userData = await postUser(inputs);
+        console.log(userData);
+      }
     } catch (err) {
       alert(err.message);
     }

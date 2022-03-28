@@ -29,13 +29,14 @@ const useMedia = () => {
       );
       setMediaArray(allFiles);
     } catch (err) {
-      console.log(err.message);
+      alert(err.message);
     }
   };
 
   useEffect(() => {
     getMedia();
   }, []);
+
   return {mediaArray};
 };
 
@@ -49,6 +50,15 @@ const useUser = () => {
     return await fetchJson(baseUrl + 'users/user', fetchOptions);
   };
 
+  const getUsername = async (username) => {
+    const checkUser = await fetchJson(baseUrl + 'users/username/' + username);
+    if (checkUser.available) {
+      return true;
+    } else {
+      throw new Error('Username not available');
+    }
+  };
+
   const postUser = async (inputs) => {
     const fetchOptions = {
       method: 'POST',
@@ -59,7 +69,8 @@ const useUser = () => {
     };
     return await fetchJson(baseUrl + 'users', fetchOptions);
   };
-  return {getUser, postUser};
+
+  return {getUser, postUser, getUsername};
 };
 
 const useLogin = () => {
@@ -76,4 +87,4 @@ const useLogin = () => {
   return {postLogin};
 };
 
-export {useMedia, useUser, useLogin};
+export {useMedia, useLogin, useUser};

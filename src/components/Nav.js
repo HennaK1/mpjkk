@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import {useUser} from '../hooks/ApiHooks';
 
@@ -33,6 +33,9 @@ const Nav = () => {
         </li>
         <li>
           <Link to={'/profile'}>Profile</Link>
+        </li>
+        <li>
+          <Link to={'/logout'}>Logout</Link>
         </li>
       </ul>
     </nav>
