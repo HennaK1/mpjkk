@@ -1,18 +1,28 @@
-import {Button, Grid, Typography} from '@mui/material';
-// import {useNavigate} from 'react-router-dom';
+import {Button, CircularProgress, Grid, Typography} from '@mui/material';
+import {useMedia} from '../hooks/ApiHooks';
+import {useNavigate} from 'react-router-dom';
 import useForm from '../hooks/FormHooks';
+import {useState, useEffect} from 'react';
 
 const Upload = () => {
+  const [preview, setPreview] = useState('logo192.png');
   const alkuarvot = {
     title: '',
     description: '',
   };
-
-  // const navigate = useNavigate();
+  const {postMedia, loading} = useMedia();
+  const navigate = useNavigate();
 
   const doUpload = async () => {
     try {
       console.log('doUpload');
+      const token = localStorage.getItem('token');
+      const formdata = new FormData();
+      formdata.append('title', inputs.title);
+      formdata.append('description', inputs.description);
+      formdata.append('file', inputs.file);
+      const mediaData = await postMedia(formdata, token);
+      confirm(mediaData.message) && navigate('/home');
     } catch (err) {
       alert(err.message);
     }
@@ -22,6 +32,16 @@ const Upload = () => {
     doUpload,
     alkuarvot
   );
+
+  useEffect(() => {
+    if (inputs.file) {
+      const reader = new FileReader();
+      reader.addEventListener('load', () => {
+        setPreview(reader.result);
+      });
+      reader.readAsDataURL(inputs.file);
+    }
+  }, [inputs.file]);
 
   console.log(inputs);
 
@@ -54,10 +74,15 @@ const Upload = () => {
             accept="image/*, video/*, audio/*"
             onChange={handleInputChange}
           />
+          <img src={preview} alt="preview" />
 
-          <Button fullWidth color="primary" type="submit" variant="contained">
-            Login
-          </Button>
+          {loading ? (
+            <CircularProgress />
+          ) : (
+            <Button fullWidth color="primary" type="submit" variant="contained">
+              Login
+            </Button>
+          )}
         </form>
       </Grid>
     </Grid>
