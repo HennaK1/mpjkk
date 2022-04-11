@@ -19,7 +19,7 @@ import {useUser} from '../hooks/ApiHooks';
 import {Home, AccountCircle, CloudUpload, Folder} from '@mui/icons-material';
 
 const Nav = () => {
-  const [user, setUser] = useContext(MediaContext);
+  const {user, setUser} = useContext(MediaContext);
   const [open, setOpen] = useState(false);
   const {getUser} = useUser();
   const navigate = useNavigate();
@@ -96,7 +96,7 @@ const Nav = () => {
                 </ListItemIcon>
                 <ListItemText primary="Upload" />
               </ListItemButton>
-              <ListItemButton component={Link} to="/myFiles">
+              <ListItemButton component={Link} to="/myfiles">
                 <ListItemIcon>
                   <Folder />
                 </ListItemIcon>
